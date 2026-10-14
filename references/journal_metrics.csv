@@ -1,0 +1,27 @@
+﻿abbr,journal,issn,publisher,impact_factor,jcr_quartile,metric_year,metric_source,indexing,metric_status,venue_note
+RMRE,Rock Mechanics and Rock Engineering,0723-2632,Springer,7.1,Q1,2025,出版社官网(link.springer.com/journal/603),SCIE;Scopus,已核验,5年IF 8.0(官网同页)；岩石力学旗舰刊
+IJRMMS,International Journal of Rock Mechanics and Mining Sciences,1365-1609,Elsevier,8.5,Q1,2025,JCR转载(journalmetrics.org 2026-06-17发布),SCIE;Scopus,待复核,上一年度7.5；ENGINEERING GEOLOGICAL与MINING两个JCR类目均Q1
+AG,Acta Geotechnica,1861-1133,Springer,5.7,Q1,2025,JCR转载(journalsimpactfactors.com),SCIE;Scopus,待复核,注意与Scopus系影响分(约7.04 resurchify)区分口径
+JRMGE,Journal of Rock Mechanics and Geotechnical Engineering,1674-7755,Elsevier/中科院,10.2,Q1,2023,出版社页面(sciencedirect.com 2024年快照),SCIE;Scopus,待复核,第三方(journalsinsights)称最新为7.3——两源冲突，引用前必核最新JCR
+CG,Computers and Geotechnics,0266-352X,Elsevier,,,,,SCIE;Scopus,待核验,JCR IF待核验；SJR长期Q1；Scopus系影响分约6.74(resurchify)非JCR口径勿混用
+GGM,Geotextiles and Geomembranes,0266-1144,Elsevier,,,,,SCIE;Scopus,待核验,JCR IF待核验；SJR Q1；Scopus系影响分约6.33(resurchify)非JCR口径
+GEO,Géotechnique,0016-8505,Emerald,5.2,Q1,2025,出版社官网(emerald.com/jgeot Metrics snapshot),SCIE;Scopus,已核验,岩土理论权威老牌刊
+JGGE,Journal of Geotechnical and Geoenvironmental Engineering,1090-0241,ASCE,,,,,SCIE;Scopus,待核验,JCR IF待核验（旧值约4.4未核实）
+IJOG,International Journal of Geomechanics,1532-3641,ASCE,3.3,Q2,2025,JCR转载(journalsimpactfactors.com 类目排名25/65),SCIE;Scopus,待复核,
+NAG,International Journal for Numerical and Analytical Methods in Geomechanics,0363-9061,Wiley,,,,,SCIE;Scopus,待核验,本轮检索未能获得可靠JCR值
+CGJ,Canadian Geotechnical Journal,0008-3674,Canadian Science Publishing,3.0,,2025,出版社官网(cdnsciencepub.com/journal/cgj),SCIE;Scopus,已核验,官网同时给出5年IF 3.9；分区官网未标注(第三方多记Q1)
+SAF,Soils and Foundations,0038-0806,Elsevier/JGS,3.7,Q2,2025,JCR转载(journalmetrics.org/bioxbio 2026-06发布),SCIE;Scopus,待复核,ScienceDirect页面缓存仍显示3.3(2024年度)；journalsimpactfactors 2024年度亦记3.3/Q2
+EG,Engineering Geology,0013-7952,Elsevier,,,,,SCIE;Scopus,待核验,OpenAlex类站点显示10.3为非JCR口径勿直接引用；SJR Q1
+LANDSLIDES,Landslides,1612-510X,Springer,7.4,Q1,2025,出版社官网(link.springer.com/journal/10346),SCIE;Scopus,已核验,5年IF 7.8(官网同页)；ICL会刊
+BEGE,Bulletin of Engineering Geology and the Environment,1435-9529,Springer,4.9,Q1,2025,出版社官网(link.springer.com/journal/10064),SCIE;Scopus,已核验,5年IF 5.1(官网同页)；IAEG会刊
+TUST,Tunnelling and Underground Space Technology,0886-7798,Elsevier,8.7,Q1,2025,出版社页面(sciencedirect.com),SCIE;Scopus,已核验,CiteScore 13.4(官网展示)
+EFM,Engineering Fracture Mechanics,0013-7944,Elsevier,,,,,SCIE;Scopus,待核验,JCR IF待核验；Scopus系约6.34/OpenAlex约6.2均为非JCR口径
+SDEE,Soil Dynamics and Earthquake Engineering,0267-7261,Elsevier,5.1,Q1,2025,WoS期刊页(wos-journal.info)与JCR转载一致,SCIE;Scopus,待复核,5年IF 5.2
+G4,Geomechanics and Geophysics for Geo-Energy and Geo-Resources,2363-4357,Springer,,,,,SCIE;Scopus,待核验,能源岩土新刊，本轮未获可靠JCR值
+岩石力学与工程学报,Chinese Journal of Rock Mechanics and Engineering,1000-6915,,,,,,EI;CSCD,无JCR收录,如需中文刊指标查《中国学术期刊影响因子年报》(CNKI)
+岩土力学,Rock and Soil Mechanics,,,,,,,EI;CSCD,无JCR收录,如需中文刊指标查《中国学术期刊影响因子年报》(CNKI)
+岩土工程学报,Chinese Journal of Geotechnical Engineering,1000-4548,,,,,,EI;CSCD,无JCR收录,如需中文刊指标查《中国学术期刊影响因子年报》(CNKI)
+土木工程学报,China Civil Engineering Journal,,,,,,,EI;CSCD,无JCR收录,附刊
+工程地质学报,Journal of Engineering Geology,,,,,,,CSCD;北大核心,无JCR收录,附刊
+煤炭学报,Journal of China Coal Society,0253-9993,,,,,,EI;CSCD,无JCR收录,附刊
+水利学报,Journal of Hydraulic Engineering,0559-9350,,,,,,EI;CSCD,无JCR收录,附刊

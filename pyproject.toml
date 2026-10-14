@@ -1,0 +1,10 @@
+[project]
+name = "rock-mechanics-literature-search"
+version = "0.1.0"
+description = "岩石力学与岩土工程文献检索技能脚本"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "pywinauto==0.6.9",
+    "pyautogui==0.9.54",
+    "pillow",
+]
