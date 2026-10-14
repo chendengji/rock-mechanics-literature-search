@@ -29,7 +29,7 @@
 ## 依赖
 
 ```
-uv sync --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search"
+uv sync --directory "<技能目录>"
 ```
 
 依赖声明在技能根目录 `pyproject.toml`（`pywinauto==0.6.9`、`pyautogui==0.9.54`、`pillow`），

@@ -6,7 +6,8 @@
 本模块把布局固化成代码，脚本按 `p(root, "03_final", "x.csv")` 取路径即可，
 `init` 一次生成骨架 + README，`manifest` 随时导出全量文件清单。
 
-标准布局（任务根目录 = Documents/paper/lit_<主题>_<YYYYMMDD>/）：
+标准布局（任务根目录 = <论文根>/lit_<主题>_<YYYYMMDD>/，<论文根> 默认 ~/Documents/paper，
+可用环境变量 LIT_PAPER_ROOT 覆盖）：
     00_config/       任务配置：检索词表、期刊范围、实际执行命令（可复现）
     01_sources/      外部来源快照：各数据源原始返回、跨库合并库
     02_intermediate/ 中间层：去重/标签/评分/摘要合并后的数据与候选表
@@ -28,13 +29,15 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import re
 import shutil
 import sys
 from datetime import datetime
 from pathlib import Path
 
-PAPER_ROOT = Path.home() / "Documents" / "paper"
+# 任务产出根目录：默认 ~/Documents/paper，可用环境变量 LIT_PAPER_ROOT 覆盖。
+PAPER_ROOT = Path(os.environ.get("LIT_PAPER_ROOT") or (Path.home() / "Documents" / "paper"))
 
 # 类别目录名 → 用途说明（顺序即 README 展示顺序）
 LAYOUT: list[tuple[str, str]] = [
@@ -279,7 +282,7 @@ def main(argv=None) -> int:
     q.add_argument("topic")
     q.add_argument("--when", default=None)
     q.add_argument("--note", default="")
-    q.add_argument("--root", default=str(PAPER_ROOT))
+    q.add_argument("--root", default=str(PAPER_ROOT), help="论文根目录（默认 LIT_PAPER_ROOT 或 ~/Documents/paper）")
 
     q = sub.add_parser("path", help="取标准布局下的路径并建父目录")
     q.add_argument("root")

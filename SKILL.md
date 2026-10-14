@@ -33,20 +33,20 @@ description: 岩石力学与岩土工程领域深度定制的文献检索技能�
 - `pyproject.toml` + `uv.lock` — **依赖声明与锁文件**：`requires-python = ">=3.12,<3.13"`，依赖 `pywinauto/pyautogui/pillow`；由 uv 解析锁定版本，装入本技能目录 `.venv`。新增/升级依赖在此声明后跑 `uv sync --directory "<本技能目录>"`，**不要 pip install**。
 - `.cache/` — 本地缓存（Zotero 本地 API Key），已 `.gitignore`，不入库、不带走。
 
-**运行环境**：Python 一律走本机 uv 管理的环境（**不要直接调用 `python`、不要手装 Python**）。所有脚本统一用 `uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/xxx.py` 调用——uv 会按本技能目录的 `pyproject.toml`（`requires-python = ">=3.12,<3.13"`）自动选用 uv 托管的 CPython 3.12.x 并构建/复用该目录下的 `.venv`。检索/导入类脚本仅依赖标准库；PDF 下载类脚本另需 pywinauto/pyautogui/pillow，依赖声明在 `pyproject.toml`，由 uv 装入本技能目录 `.venv`（首次 `uv run` 会自动安装）。
+**运行环境**：Python 一律走本机 uv 管理的环境（**不要直接调用 `python`、不要手装 Python**）。所有脚本统一用 `uv run --directory "<技能目录>" scripts/xxx.py` 调用（`<技能目录>` 指本技能安装目录，默认 `~/.config/opencode/skills/rock-mechanics-literature-search`，下文命令中的 `<技能目录>` 均指此处）——uv 会按本技能目录的 `pyproject.toml`（`requires-python = ">=3.12,<3.13"`）自动选用 uv 托管的 CPython 3.12.x 并构建/复用该目录下的 `.venv`。检索/导入类脚本仅依赖标准库；PDF 下载类脚本另需 pywinauto/pyautogui/pillow，依赖声明在 `pyproject.toml`，由 uv 装入本技能目录 `.venv`（首次 `uv run` 会自动安装）。
 
-**凭据与限速注意**：Semantic Scholar API Key 自动从 `C:\Users\QZ\Desktop\MouseWithoutBorders\ScreenCaptures\.env` 加载（`lit_secrets.py`，键名 `SEMANTIC_SCHOLAR_API_KEY` 或 `S2_API_KEY`），脚本无需手动传参。Semantic Scholar 与 OpenAlex 均按 IP/速率限流——OpenAlex 节流已改为**跨进程共享队列**（`lit_throttle.py`，锁文件在技能目录 `.cache/`；同机并跑多个检索脚本不会叠加出口速率），S2 默认 0.55 req/s、OpenAlex 默认 0.7 req/s，配 429 指数退避，**严禁人为连续刷大量请求**，以免封 IP/Key。可传 `--rate` / `--s2-rate` 调速率。
+**凭据与限速注意**：Semantic Scholar API Key 自动从 `~/.config/opencode/.env`（或技能目录下的 `.env`，亦可用环境变量 `LIT_ENV_FILE` 指定）加载（`lit_secrets.py`，键名 `SEMANTIC_SCHOLAR_API_KEY` 或 `S2_API_KEY`），脚本无需手动传参。Semantic Scholar 与 OpenAlex 均按 IP/速率限流——OpenAlex 节流已改为**跨进程共享队列**（`lit_throttle.py`，锁文件在技能目录 `.cache/`；同机并跑多个检索脚本不会叠加出口速率），S2 默认 0.55 req/s、OpenAlex 默认 0.7 req/s，配 429 指数退避，**严禁人为连续刷大量请求**，以免封 IP/Key。可传 `--rate` / `--s2-rate` 调速率。
 
 **OpenAlex 每日预算（重要）**：匿名请求按"美元预算"计费（约 $0.001/请求）。**当日预算用尽后，无论把速率降到多低都会返回 429**，响应体为 `Insufficient budget ... Resets at midnight UTC`——节流器解决不了这个问题。预算耗尽时：① 等 UTC 零点重置；② 改用 `search_crossref.py` / `search_semantic_scholar.py`（不受此预算限制）；③ 用 `search_federated.py` 自动跳过失效数据源。大检索任务请分批在一天内完成，或优先走 federated。
 
 ## 产出目录规范（技能文件与结果分离 + 固定九类布局）
 
-技能文件固定在本目录（`~/.config/opencode/skills/rock-mechanics-literature-search`）；**所有检索产出必须写入 `C:\Users\QZ\Documents\paper` 下的独立任务文件夹，绝不要写到技能目录里**。
+技能文件固定在本目录（`~/.config/opencode/skills/rock-mechanics-literature-search`）；**所有检索产出必须写入 `~/Documents/paper`（可用环境变量 `LIT_PAPER_ROOT` 覆盖）下的独立任务文件夹，绝不要写到技能目录里**。
 
 ### 建任务目录（一行命令）
 
 ```bash
-uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" \
+uv run --directory "<技能目录>" \
     scripts/lit_paths.py new "<主题英文短横线>" --note "本次检索目标"
 ```
 
@@ -100,18 +100,18 @@ uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literatur
 ```bash
 # 相关性排序（默认，适合找代表性文献）；默认不截断，输出全表供人工复核
 # --task 给标准任务目录后，-o 只需写文件名，脚本自动落位到 03_final/（.csv）
-uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/search_rock_journals.py --query "{英文关键词}" \
+uv run --directory "<技能目录>" scripts/search_rock_journals.py --query "{英文关键词}" \
     --year-range {如 2020-2026} --max-results 100 \
-    --task "C:/Users/QZ/Documents/paper/lit_<主题>_<日期>" -o "{主题}.csv"
+    --task "~/Documents/paper/lit_<主题>_<日期>" -o "{主题}.csv"
 
 # 本地综合评分排序（关键词信号+白名单加分+被引+时效）；--top-n 可选截断
-uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/search_rock_journals.py --query "..." --max-results 200 --sort score:desc
+uv run --directory "<技能目录>" scripts/search_rock_journals.py --query "..." --max-results 200 --sort score:desc
 
 # 最新文献跟踪（按发表日期）
-uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/search_rock_journals.py --query "{英文关键词}" --sort publication_date:desc
+uv run --directory "<技能目录>" scripts/search_rock_journals.py --query "{英文关键词}" --sort publication_date:desc
 
 # 经典高被引文献
-uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/search_rock_journals.py --query "{英文关键词}" --min-citations 100 --sort cited_by_count:desc
+uv run --directory "<技能目录>" scripts/search_rock_journals.py --query "{英文关键词}" --min-citations 100 --sort cited_by_count:desc
 ```
 
 > **OpenAlex 限流保护**：所有 OpenAlex 请求（`search_rock_journals.py` / `iterative_search.py` / `search_openalex.py` / `search_federated.py`）共用 `lit_throttle.py` 的**跨进程共享队列**（默认 0.7 req/s ≈ 1.4s/请求；锁文件在技能目录 `.cache/rate_openalex.lock`，同机并跑多个脚本不会叠加出口速率），429 指数退避最长等 60s、最多重试 6 次。可传 `--rate N` 调快（如 `--rate 2`）或调慢（防封时可 `--rate 0.3`）。**注意区分两种 429**：响应体含 `Retry-After` 且无 `dailyRemainingUsd` 才是速率问题（降速有效）；若出现 `Insufficient budget ... dailyRemainingUsd: 0`，说明当日匿名预算已耗尽，降速无效，需等 UTC 零点或改用 CrossRef/S2。
@@ -125,10 +125,10 @@ uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literatur
 - **轮次 3**（收敛判断）：若轮次新增相关文献 < 3 篇则收敛。用边缘分析查漏——检查"只差一个条件"的文献（标题双命中但被单侧/排除的），确认是漏检还是假阳性
 
 ```bash
-uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/iterative_search.py \
+uv run --directory "<技能目录>" scripts/iterative_search.py \
     --query "rockburst water content" --query "含水率 冲击倾向性" --query '"bursting liability" water' \
     --year-range 2000-2026 --per-query 50 \
-    --task "C:/Users/QZ/Documents/paper/lit_water_rockburst_20260828"
+    --task "~/Documents/paper/lit_water_rockburst_20260828"
 # --task 会自动建骨架并分流：逐轮原始命中/检索词→01_sources/，每轮分析→04_reports/，
 # -o 省略时默认 02_intermediate/result；也可用 -o 显式指定文件名。
 # 注意：--side-a/--side-b 是相关性词表（默认=水×岩爆），其他交叉主题必须自定义两个词表
@@ -146,7 +146,7 @@ uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literatur
 3. 未经用户明确应允，**不得擅自发起任何 WebSearch / WebFetch 检索**；网络兜底使用量应尽量减少。
 4. 用网络结果时，须在交付表里对每条标注来源为"网络兜底"，且不编造字段（标"待核验"）。
 
-**补充路径**：需要某几篇的完整 BibTeX 时，`bibtex_manager.py --jsonl "C:/Users/QZ/Documents/paper/lit_<主题>_<日期>/{检索结果}.jsonl" --output "C:/Users/QZ/Documents/paper/lit_<主题>_<日期>/references.bib"`。
+**补充路径**：需要某几篇的完整 BibTeX 时，`bibtex_manager.py --jsonl "~/Documents/paper/lit_<主题>_<日期>/{检索结果}.jsonl" --output "~/Documents/paper/lit_<主题>_<日期>/references.bib"`。
 
 ### 第 4 步：人工复核闭环（机器排序 → 人确认 → 机器入库）
 
@@ -205,13 +205,13 @@ JSONL 中对应新增字段：`record_id`（DOI/题名哈希，跨轮次稳定 I
 
 ```bash
 # 预检：看哪些已在库（不写入）
-uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/zotero_import.py "C:/Users/QZ/Documents/paper/lit_<主题>_<日期>/{检索结果}.jsonl" --collection "{主题分类名}" --dry-run
+uv run --directory "<技能目录>" scripts/zotero_import.py "~/Documents/paper/lit_<主题>_<日期>/{检索结果}.jsonl" --collection "{主题分类名}" --dry-run
 
 # 正式入库：自动建分类、DOI 查重、打标签
-uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/zotero_import.py "C:/Users/QZ/Documents/paper/lit_<主题>_<日期>/{检索结果}.jsonl" --collection "{主题分类名}" --tag "{标签}"
+uv run --directory "<技能目录>" scripts/zotero_import.py "~/Documents/paper/lit_<主题>_<日期>/{检索结果}.jsonl" --collection "{主题分类名}" --tag "{标签}"
 
 # 只入库精选的几篇（先按 DOI 筛选）
-uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/zotero_import.py "C:/Users/QZ/Documents/paper/lit_<主题>_<日期>/{检索结果}.jsonl" --only-doi "10.1016/j.jrmge.2023.06.019,10.1007/s40948-024-00807-4"
+uv run --directory "<技能目录>" scripts/zotero_import.py "~/Documents/paper/lit_<主题>_<日期>/{检索结果}.jsonl" --only-doi "10.1016/j.jrmge.2023.06.019,10.1007/s40948-024-00807-4"
 ```
 
 注意：首次在**新电脑/重装后**运行会弹一次 Zotero 授权对话框，引导用户选"总是允许"；无 DOI 的中文文献也可入库（自动跳过 DOI 查重，靠标题精确匹配查重）。
@@ -226,8 +226,8 @@ uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literatur
 3. **过证书警告**（若出现"隐私设置错误"）：点"高级"→"继续前往 ...（不安全）"。
 4. **等人机验证自动通过** → 页面跳转到可访问镜像（当前实测为 `sci-net.xyz`）→ PDF 在内置阅读器加载。
 5. **下载**：多次 `Tab` 让阅读器工具栏暴露下载按钮 → `chrome-devtools_click` 点"下载" → 弹系统"另存为"对话框。
-6. **自动确认保存**：运行 `uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/save_dialog_confirm.py "<任务pdf目录>\<作者>_<年份>_<短题>.pdf"`（win32 backend 定位 `#32770`"另存为"→文件名框填目标路径→点"保存"），PDF 直接落盘到目标位置，**无需人工**。或 `--keep` 存默认目录。
-7. **核对与收尾**：核对 PDF 大小/文件头 `%PDF-`；必要时移入 `Documents\paper\lit_...\pdf\`；更新 `fulltext_status=downloaded`。
+6. **自动确认保存**：运行 `uv run --directory "<技能目录>" scripts/save_dialog_confirm.py "<任务pdf目录>\<作者>_<年份>_<短题>.pdf"`（win32 backend 定位 `#32770`"另存为"→文件名框填目标路径→点"保存"），PDF 直接落盘到目标位置，**无需人工**。或 `--keep` 存默认目录。
+7. **核对与收尾**：核对 PDF 大小/文件头 `%PDF-`；必要时移入 `~/Documents/paper/lit_.../pdf/`；更新 `fulltext_status=downloaded`。
 
 **限速与纪律（强制）**：
 - 每篇 DOI 下载之间至少等待 8-15 秒；对同一镜像连续操作 ≤3 篇后停 1 分钟以上，避免触发频控。

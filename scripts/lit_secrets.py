@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """共享凭据与限速模块（仅标准库，用于本技能的所有检索脚本）。
 
-自动从项目级 .env 文件读取各 API 密钥，避免每次手动传参、也避免密钥散落在各脚本里。
+自动从 .env 文件读取各 API 密钥，避免每次手动传参、也避免密钥散落在各脚本里。
 
-.env 候选路径（按序取第一个存在的）：C:\\Users\\QZ\\.config\\opencode\\.env（项目级唯一密钥文件）、
-C:\\Users\\QZ\\Desktop\\MouseWithoutBorders\\ScreenCaptures\\.env（旧路径，已迁移）。
-可用环境变量 LIT_ENV_FILE 覆盖。解析规则：逐行读 `KEY=value`，忽略 # 注释与空行。
+.env 查找顺序（取第一个存在的）：
+  1. 环境变量 LIT_ENV_FILE 指定的文件（最高优先级，显式覆盖）；
+  2. 技能目录下的 .env（<技能目录>/.env）；
+  3. 用户配置目录 ~/.config/opencode/.env（跨平台：Windows 为 %USERPROFILE%\\.config\\opencode\\.env）。
+解析规则：逐行读 `KEY=value`，忽略 # 注释与空行。
 
 当前支持：
   - Semantic Scholar：SEMANTIC_SCHOLAR_API_KEY（.env 键名）或 S2_API_KEY（备用键名）
@@ -17,9 +19,12 @@ import os
 import sys
 import threading
 import time
+from pathlib import Path
 
-DEFAULT_ENV_FILES = (r"C:\Users\QZ\.config\opencode\.env",
-                     r"C:\Users\QZ\Desktop\MouseWithoutBorders\ScreenCaptures\.env")
+_SKILL_DIR = Path(__file__).resolve().parent.parent
+
+DEFAULT_ENV_FILES = (str(_SKILL_DIR / ".env"),
+                     str(Path.home() / ".config" / "opencode" / ".env"))
 
 _SECRETS = None
 

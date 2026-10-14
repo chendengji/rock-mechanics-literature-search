@@ -8,7 +8,7 @@
         --topic "methods to inject water into hard rock (granite/sandstone) for rockburst prevention" \
         --side-a "water injection|imbibition|saturat|wetting|water content|moisture|aqueous" \
         --side-b "electroosmosis|electrokinetic|microwave|ultrasonic|pulsed|plasma|electrohydraulic|electromagnetic|waterjet" \
-        --year-range 2000-2026 --per-query 50 --min-rounds 3 -o C:/Users/QZ/Documents/paper/lit_water_injection_rock_20260828/result
+        --year-range 2000-2026 --per-query 50 --min-rounds 3 -o <任务目录>/result
 
 每轮产物:
   {prefix}_round{N}.jsonl / .csv / _queries.txt

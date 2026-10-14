@@ -12,7 +12,7 @@
 |---|---|
 | 实体 Chrome | 已用调试端口启动：`chrome.exe --remote-debugging-port=9222 --remote-allow-origins=* --user-data-dir="%LOCALAPPDATA%\ChromeDebug9222"` |
 | MCP chrome-devtools | opencode 配置中已启用，且指向该端口 |
-| Python 环境 | uv 管理：`uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search"` 自动选用 uv 托管 CPython 3.12.x；pywinauto 等依赖声明在技能目录 `pyproject.toml`，已装入该目录 `.venv`（win32 backend） |
+| Python 环境 | uv 管理：`uv run --directory "<技能目录>"` 自动选用 uv 托管 CPython 3.12.x；pywinauto 等依赖声明在技能目录 `pyproject.toml`，已装入该目录 `.venv`（win32 backend） |
 
 ## 2. 操作步骤
 
@@ -24,7 +24,7 @@
 4. **下载**：多次 `Tab` 让阅读器工具栏暴露下载按钮 →
    `chrome-devtools_click` 点"下载" → 弹系统"另存为"对话框。
 5. **自动确认保存**：运行
-   `uv run --directory "C:/Users/QZ/.config/opencode/skills/rock-mechanics-literature-search" scripts/save_dialog_confirm.py "<任务pdf目录>\<作者>_<年份>_<短题>.pdf"`
+   `uv run --directory "<技能目录>" scripts/save_dialog_confirm.py "<任务pdf目录>\<作者>_<年份>_<短题>.pdf"`
    （win32 backend 定位 `#32770`"另存为" → 文件名框填目标路径 → 点"保存"），
    PDF 直接落盘到目标位置，**无需人工**；或 `--keep` 存默认目录。
 6. **核对与收尾**：核对 PDF 大小/文件头 `%PDF-`；必要时移入
